@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { ThemeProviderContext } from "../components/provider/theme-provider"
 
-export const useTheme = () => {
+const useTheme = () => {
   const context = useContext(ThemeProviderContext)
 
   if (context === undefined)
@@ -9,3 +9,5 @@ export const useTheme = () => {
 
   return context
 }
+
+export default useTheme

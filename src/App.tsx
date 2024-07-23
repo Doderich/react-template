@@ -7,7 +7,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className='w-full h-full flex justify-center items-center'>
+      <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
        
       <h1>Vite + React</h1>
       <ThemeToggle />
