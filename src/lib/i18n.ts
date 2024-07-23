@@ -5,19 +5,19 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 // the translations
 // (tip move them in a JSON file and import them,
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
-import enTranslation from '../../messages/en.json';
-import deTranslation from '../../messages/de.json';
 
+export const supportedLanguages = ['en', 'de'];
 const resources = {
-	en: enTranslation as ResourceLanguage,
-	de: deTranslation as ResourceLanguage,
+	en: await import('../../messages/en.json'),
+	de: await import('../../messages/de.json'),
 };
 
+export type Locale = keyof typeof resources;
 i18n.use(initReactI18next) // passes i18n down to react-i18next
 	.use(LanguageDetector)
 	.init({
 		resources,
-		supportedLngs: ['en', 'de'],
+		supportedLngs: supportedLanguages,
 		interpolation: {
 			escapeValue: false, // react already safes from xss
 		},

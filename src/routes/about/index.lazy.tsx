@@ -8,5 +8,5 @@ export const Route = createLazyFileRoute('/about/')({
 function About() {
 	const { t } = useTranslation();
 
-	return <h1>{t('Learn React')}</h1>;
+	return <div></div>;
 }

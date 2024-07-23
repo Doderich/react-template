@@ -1,6 +1,15 @@
 {
-	"translation": {
-		"Welcome to React": "Willkommen zu React und react-i18next",
-		"Learn React": "Lernen Sie React"
+	"Welcome to React": "Willkommen zu React und react-i18next",
+	"Learn React": "Lernen Sie React",
+	"Theme": {
+		"change_theme": "Thema ändern",
+		"light": "Licht",
+		"dark": "Dunkel",
+		"system": "System"
+	},
+	"Language": {
+		"change_language": "Sprache ändern",
+		"de": "Deutsch",
+		"en": "Englisch"
 	}
 }
