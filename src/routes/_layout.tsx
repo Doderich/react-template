@@ -1,14 +1,14 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout')({
-  component: LayoutComponent,
-})
+	component: LayoutComponent,
+});
 
 function LayoutComponent() {
-  return (
-    <div>
-      <h1>Layout</h1>
-      <Outlet />
-    </div>
-  )
+	return (
+		<div>
+			<h1>Layout</h1>
+			<Outlet />
+		</div>
+	);
 }
