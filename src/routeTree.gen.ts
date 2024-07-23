@@ -18,7 +18,9 @@ import { Route as LayoutImport } from './routes/_layout'
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
+const ExamplesIndexLazyImport = createFileRoute('/examples/')()
 const AboutIndexLazyImport = createFileRoute('/about/')()
+const ExamplesReactQueryLazyImport = createFileRoute('/examples/react-query')()
 
 // Create/Update Routes
 
@@ -32,10 +34,24 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const ExamplesIndexLazyRoute = ExamplesIndexLazyImport.update({
+  path: '/examples/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/examples/index.lazy').then((d) => d.Route),
+)
+
 const AboutIndexLazyRoute = AboutIndexLazyImport.update({
   path: '/about/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about/index.lazy').then((d) => d.Route))
+
+const ExamplesReactQueryLazyRoute = ExamplesReactQueryLazyImport.update({
+  path: '/examples/react-query',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/examples/react-query.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -55,11 +71,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
+    '/examples/react-query': {
+      id: '/examples/react-query'
+      path: '/examples/react-query'
+      fullPath: '/examples/react-query'
+      preLoaderRoute: typeof ExamplesReactQueryLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/about/': {
       id: '/about/'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/examples/': {
+      id: '/examples/'
+      path: '/examples'
+      fullPath: '/examples'
+      preLoaderRoute: typeof ExamplesIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -69,7 +99,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
+  ExamplesReactQueryLazyRoute,
   AboutIndexLazyRoute,
+  ExamplesIndexLazyRoute,
 })
 
 /* prettier-ignore-end */
@@ -82,7 +114,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_layout",
-        "/about/"
+        "/examples/react-query",
+        "/about/",
+        "/examples/"
       ]
     },
     "/": {
@@ -91,8 +125,14 @@ export const routeTree = rootRoute.addChildren({
     "/_layout": {
       "filePath": "_layout.tsx"
     },
+    "/examples/react-query": {
+      "filePath": "examples/react-query.lazy.tsx"
+    },
     "/about/": {
       "filePath": "about/index.lazy.tsx"
+    },
+    "/examples/": {
+      "filePath": "examples/index.lazy.tsx"
     }
   }
 }

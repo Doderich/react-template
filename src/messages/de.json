@@ -11,5 +11,26 @@
 		"change_language": "Sprache ändern",
 		"de": "Deutsch",
 		"en": "Englisch"
+	},
+	"Navigation": {
+		"title": "Vite Application Template",
+		"examples": "Beispiele",
+		"example_react_query": "React Query",
+		"example_tanstack_table": "TanStack Table",
+		"example_tanstack_router": "TanStack Router",
+		"example_react_form": "React Hook Form",
+		"example_rechart": "Rechart",
+		"example_authentication": "Authentifizierung",
+		"technologies": "Technologien",
+		"react": "React",
+		"vite": "Vite",
+		"tailwind": "Tailwind",
+		"shadcnui": "ShadcnUI",
+		"react_query": "React Query",
+		"react_hook_form": "React Hook Form",
+		"recharts": "Recharts",
+		"tanstack_table": "TanStack Table",
+		"tanstack_router": "TanStack Router",
+		"authentication": "Authentifizierung"
 	}
 }
