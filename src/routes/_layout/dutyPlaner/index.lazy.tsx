@@ -1,11 +1,12 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 // import { useTranslation } from 'react-i18next';
 
-export const Route = createLazyFileRoute('/')({
-	component: Index,
+export const Route = createLazyFileRoute('/_layout/dutyPlaner/')({
+	component: DutyPlaner,
 });
 
-function Index() {
+function DutyPlaner() {
 	// const { t } = useTranslation();
-	return <div className="p-2"></div>;
+
+	return <div>DutyPlaner</div>;
 }

@@ -14,13 +14,16 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutIndexImport } from './routes/_layout/index'
 
 // Create Virtual Routes
 
-const IndexLazyImport = createFileRoute('/')()
-const ExamplesIndexLazyImport = createFileRoute('/examples/')()
-const AboutIndexLazyImport = createFileRoute('/about/')()
-const ExamplesReactQueryLazyImport = createFileRoute('/examples/react-query')()
+const LayoutSemesterIndexLazyImport = createFileRoute('/_layout/semester/')()
+const LayoutPersonalIndexLazyImport = createFileRoute('/_layout/personal/')()
+const LayoutDutyPlanerIndexLazyImport = createFileRoute(
+  '/_layout/dutyPlaner/',
+)()
+const LayoutAboutIndexLazyImport = createFileRoute('/_layout/about/')()
 
 // Create/Update Routes
 
@@ -29,41 +32,43 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const LayoutIndexRoute = LayoutIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+  getParentRoute: () => LayoutRoute,
+} as any)
 
-const ExamplesIndexLazyRoute = ExamplesIndexLazyImport.update({
-  path: '/examples/',
-  getParentRoute: () => rootRoute,
+const LayoutSemesterIndexLazyRoute = LayoutSemesterIndexLazyImport.update({
+  path: '/semester/',
+  getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
-  import('./routes/examples/index.lazy').then((d) => d.Route),
+  import('./routes/_layout/semester/index.lazy').then((d) => d.Route),
 )
 
-const AboutIndexLazyRoute = AboutIndexLazyImport.update({
-  path: '/about/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about/index.lazy').then((d) => d.Route))
-
-const ExamplesReactQueryLazyRoute = ExamplesReactQueryLazyImport.update({
-  path: '/examples/react-query',
-  getParentRoute: () => rootRoute,
+const LayoutPersonalIndexLazyRoute = LayoutPersonalIndexLazyImport.update({
+  path: '/personal/',
+  getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
-  import('./routes/examples/react-query.lazy').then((d) => d.Route),
+  import('./routes/_layout/personal/index.lazy').then((d) => d.Route),
+)
+
+const LayoutDutyPlanerIndexLazyRoute = LayoutDutyPlanerIndexLazyImport.update({
+  path: '/dutyPlaner/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/dutyPlaner/index.lazy').then((d) => d.Route),
+)
+
+const LayoutAboutIndexLazyRoute = LayoutAboutIndexLazyImport.update({
+  path: '/about/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/about/index.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/_layout': {
       id: '/_layout'
       path: ''
@@ -71,26 +76,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/examples/react-query': {
-      id: '/examples/react-query'
-      path: '/examples/react-query'
-      fullPath: '/examples/react-query'
-      preLoaderRoute: typeof ExamplesReactQueryLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/': {
+      id: '/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof LayoutIndexImport
+      parentRoute: typeof LayoutImport
     }
-    '/about/': {
-      id: '/about/'
+    '/_layout/about/': {
+      id: '/_layout/about/'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof AboutIndexLazyImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof LayoutAboutIndexLazyImport
+      parentRoute: typeof LayoutImport
     }
-    '/examples/': {
-      id: '/examples/'
-      path: '/examples'
-      fullPath: '/examples'
-      preLoaderRoute: typeof ExamplesIndexLazyImport
-      parentRoute: typeof rootRoute
+    '/_layout/dutyPlaner/': {
+      id: '/_layout/dutyPlaner/'
+      path: '/dutyPlaner'
+      fullPath: '/dutyPlaner'
+      preLoaderRoute: typeof LayoutDutyPlanerIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/personal/': {
+      id: '/_layout/personal/'
+      path: '/personal'
+      fullPath: '/personal'
+      preLoaderRoute: typeof LayoutPersonalIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/semester/': {
+      id: '/_layout/semester/'
+      path: '/semester'
+      fullPath: '/semester'
+      preLoaderRoute: typeof LayoutSemesterIndexLazyImport
+      parentRoute: typeof LayoutImport
     }
   }
 }
@@ -98,10 +117,13 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexLazyRoute,
-  ExamplesReactQueryLazyRoute,
-  AboutIndexLazyRoute,
-  ExamplesIndexLazyRoute,
+  LayoutRoute: LayoutRoute.addChildren({
+    LayoutIndexRoute,
+    LayoutAboutIndexLazyRoute,
+    LayoutDutyPlanerIndexLazyRoute,
+    LayoutPersonalIndexLazyRoute,
+    LayoutSemesterIndexLazyRoute,
+  }),
 })
 
 /* prettier-ignore-end */
@@ -112,27 +134,38 @@ export const routeTree = rootRoute.addChildren({
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/_layout",
-        "/examples/react-query",
-        "/about/",
-        "/examples/"
+        "/_layout"
       ]
     },
-    "/": {
-      "filePath": "index.lazy.tsx"
-    },
     "/_layout": {
-      "filePath": "_layout.tsx"
+      "filePath": "_layout.tsx",
+      "children": [
+        "/_layout/",
+        "/_layout/about/",
+        "/_layout/dutyPlaner/",
+        "/_layout/personal/",
+        "/_layout/semester/"
+      ]
     },
-    "/examples/react-query": {
-      "filePath": "examples/react-query.lazy.tsx"
+    "/_layout/": {
+      "filePath": "_layout/index.tsx",
+      "parent": "/_layout"
     },
-    "/about/": {
-      "filePath": "about/index.lazy.tsx"
+    "/_layout/about/": {
+      "filePath": "_layout/about/index.lazy.tsx",
+      "parent": "/_layout"
     },
-    "/examples/": {
-      "filePath": "examples/index.lazy.tsx"
+    "/_layout/dutyPlaner/": {
+      "filePath": "_layout/dutyPlaner/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/personal/": {
+      "filePath": "_layout/personal/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/semester/": {
+      "filePath": "_layout/semester/index.lazy.tsx",
+      "parent": "/_layout"
     }
   }
 }
