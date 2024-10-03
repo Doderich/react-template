@@ -20,6 +20,7 @@ import { Route as LayoutIndexImport } from './routes/_layout/index'
 
 const LayoutSemesterIndexLazyImport = createFileRoute('/_layout/semester/')()
 const LayoutPersonalIndexLazyImport = createFileRoute('/_layout/personal/')()
+const LayoutFacultyIndexLazyImport = createFileRoute('/_layout/faculty/')()
 const LayoutDutyPlanerIndexLazyImport = createFileRoute(
   '/_layout/dutyPlaner/',
 )()
@@ -49,6 +50,13 @@ const LayoutPersonalIndexLazyRoute = LayoutPersonalIndexLazyImport.update({
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
   import('./routes/_layout/personal/index.lazy').then((d) => d.Route),
+)
+
+const LayoutFacultyIndexLazyRoute = LayoutFacultyIndexLazyImport.update({
+  path: '/faculty/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/faculty/index.lazy').then((d) => d.Route),
 )
 
 const LayoutDutyPlanerIndexLazyRoute = LayoutDutyPlanerIndexLazyImport.update({
@@ -97,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutDutyPlanerIndexLazyImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/faculty/': {
+      id: '/_layout/faculty/'
+      path: '/faculty'
+      fullPath: '/faculty'
+      preLoaderRoute: typeof LayoutFacultyIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/personal/': {
       id: '/_layout/personal/'
       path: '/personal'
@@ -121,6 +136,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutIndexRoute,
     LayoutAboutIndexLazyRoute,
     LayoutDutyPlanerIndexLazyRoute,
+    LayoutFacultyIndexLazyRoute,
     LayoutPersonalIndexLazyRoute,
     LayoutSemesterIndexLazyRoute,
   }),
@@ -143,6 +159,7 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/",
         "/_layout/about/",
         "/_layout/dutyPlaner/",
+        "/_layout/faculty/",
         "/_layout/personal/",
         "/_layout/semester/"
       ]
@@ -157,6 +174,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/dutyPlaner/": {
       "filePath": "_layout/dutyPlaner/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/faculty/": {
+      "filePath": "_layout/faculty/index.lazy.tsx",
       "parent": "/_layout"
     },
     "/_layout/personal/": {

@@ -8,6 +8,7 @@ import {
 	LayoutGrid,
 	LucideIcon,
 	Book,
+	House,
 } from 'lucide-react';
 import React from 'react';
 
@@ -52,6 +53,13 @@ export function getMenuList(pathname: string): Group[] {
 					label: 'Semester',
 					active: pathname.includes('/semester'),
 					icon: DotsVerticalIcon as any,
+					submenus: [],
+				},
+				{
+					href: '/faculty',
+					label: 'Facultät',
+					active: pathname.includes('/faculty'),
+					icon: House as any,
 					submenus: [],
 				},
 			],
