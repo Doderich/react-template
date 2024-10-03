@@ -9,8 +9,8 @@ export type Semester = z.infer<typeof SemesterSchema>;
 
 export const CreateSemesterFormSchema = z.object({
 	year: z.string(),
-	copy: z.boolean(),
-	semesterId: z.number().optional(),
+	copy: z.boolean().default(false),
+	semesterId: z.coerce.number().optional(),
 });
 export type CreateSemesterForm = z.infer<typeof CreateSemesterFormSchema>;
 

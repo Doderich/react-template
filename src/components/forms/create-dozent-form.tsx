@@ -25,7 +25,6 @@ import { useSemester } from '@/hooks/queries/useSemester';
 export const CreateDozentForm: FC = () => {
 	const form = useFormContext<CreateDozentFormType>();
 	const { faculties } = useFaculty();
-	const { semesters } = useSemester();
 
 	return (
 		<>

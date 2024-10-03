@@ -30,6 +30,8 @@ export const CreateSemesterForm: FC = () => {
 	const form = useFormContext<CreateSemesterFormType>();
 	const { semesters } = useSemester();
 
+	const copy = form.watch('copy');
+
 	return (
 		<>
 			<FormField
@@ -49,7 +51,7 @@ export const CreateSemesterForm: FC = () => {
 				control={form.control}
 				name="copy"
 				render={({ field }) => (
-					<FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+					<FormItem className="flex flex-row items-start space-x-3 space-y-0">
 						<FormControl>
 							<Checkbox
 								checked={field.value}
@@ -57,70 +59,70 @@ export const CreateSemesterForm: FC = () => {
 							/>
 						</FormControl>
 						<div className="space-y-1 leading-none">
-							<FormLabel>
-								Use different settings for my mobile devices
-							</FormLabel>
+							<FormLabel>Copy a semester</FormLabel>
 						</div>
 					</FormItem>
 				)}
 			/>
-			<FormField
-				control={form.control}
-				name="semesterId"
-				render={({ field }) => (
-					<FormItem>
-						<FormLabel>Semester</FormLabel>
-						<Select onValueChange={field.onChange}>
-							<FormControl>
-								<SelectTrigger>
-									<SelectValue placeholder="Select a Semester">
-										{field.value &&
-											semesters &&
-											semesters.find(
-												(semester: Semester) =>
-													semester.semesterId ===
-													field.value,
-											)?.vintage}
-									</SelectValue>
-								</SelectTrigger>
-							</FormControl>
-							<SelectContent>
-								{!!semesters &&
-									semesters
-										.reduce(
-											(
-												acc: Semester[],
-												semester: Semester,
-											) => {
-												if (
-													!acc.find(
-														(s: Semester) =>
-															s.vintage ===
-															semester.vintage,
-													)
-												) {
-													acc.push(semester);
-												}
+			{copy && (
+				<FormField
+					control={form.control}
+					name="semesterId"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Semester</FormLabel>
+							<Select onValueChange={field.onChange}>
+								<FormControl>
+									<SelectTrigger>
+										<SelectValue placeholder="Select a Semester">
+											{field.value &&
+												semesters &&
+												semesters.find(
+													(semester: Semester) =>
+														semester.semesterId ===
+														field.value,
+												)?.vintage}
+										</SelectValue>
+									</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+									{!!semesters &&
+										semesters
+											.reduce(
+												(
+													acc: Semester[],
+													semester: Semester,
+												) => {
+													if (
+														!acc.find(
+															(s: Semester) =>
+																s.vintage ===
+																semester.vintage,
+														)
+													) {
+														acc.push(semester);
+													}
 
-												return acc;
-											},
-											[],
-										)
-										.map((semester: Semester) => {
-											return (
-												<SelectItem
-													value={semester.semesterId.toString()}
-												>
-													{semester.vintage}
-												</SelectItem>
-											);
-										})}
-							</SelectContent>
-						</Select>
-						<FormMessage />
-					</FormItem>
-				)}
-			/>
+													return acc;
+												},
+												[],
+											)
+											.map((semester: Semester) => {
+												return (
+													<SelectItem
+														value={semester.semesterId.toString()}
+													>
+														{semester.vintage}
+													</SelectItem>
+												);
+											})}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			)}
 		</>
 	);
 };

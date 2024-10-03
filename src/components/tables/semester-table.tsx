@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { DataTable } from '../ui/data-table';
 import { Semester } from '@/types/semester';
 import { columns } from './semester-table-columns';
@@ -7,6 +7,7 @@ export const SemesterTable: FC<{ semesters: Semester[] }> = ({ semesters }) => {
 	return (
 		<DataTable<
 			{
+				id: string;
 				vintage: string;
 				numberOfSemesters: number[];
 			},
@@ -16,6 +17,7 @@ export const SemesterTable: FC<{ semesters: Semester[] }> = ({ semesters }) => {
 			data={semesters.reduce(
 				(
 					acc: {
+						id: string;
 						vintage: string;
 						numberOfSemesters: number[];
 					}[],
@@ -33,6 +35,7 @@ export const SemesterTable: FC<{ semesters: Semester[] }> = ({ semesters }) => {
 					}
 
 					acc.push({
+						id: semester.vintage,
 						vintage: semester.vintage,
 						numberOfSemesters: [semester.semesterNumber],
 					});

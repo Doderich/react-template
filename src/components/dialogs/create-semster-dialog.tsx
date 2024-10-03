@@ -19,6 +19,7 @@ import {
 	CreateSemesterFormSchema,
 	CreateSemesterForm as CreateSemesterFormType,
 } from '@/types/semester';
+import { CreateSemesterForm } from '../forms/create-semester-form';
 
 export const CreateSemesterDialog: FC = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,9 @@ export const CreateSemesterDialog: FC = () => {
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit, onErrors)}>
-						<CreateDozentForm />
+						<div className="flex flex-col gap-2">
+							<CreateSemesterForm />
+						</div>
 						<DialogFooter className="mt-2">
 							<DialogClose asChild>
 								<Button type="button" variant={'secondary'}>

@@ -15,6 +15,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { useEffect, useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -23,12 +24,53 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
 	columns,
-	data,
+	data: defaultData,
 }: DataTableProps<TData, TValue>) {
+	const [data, setData] = useState(() => [...defaultData]);
+	const [originalData, setOriginalData] = useState(() => [...defaultData]);
+	const [editedRows, setEditedRows] = useState({});
+
+	useEffect(() => {
+		setData(defaultData);
+		setOriginalData(defaultData);
+	}, [defaultData]);
+	console.log(data);
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		meta: {
+			editedRows,
+			setEditedRows,
+			revertData: (rowIndex: number, revert: boolean) => {
+				if (revert) {
+					setData(old =>
+						old.map((row, index) =>
+							index === rowIndex ? originalData[rowIndex] : row,
+						),
+					);
+				} else {
+					setOriginalData(old =>
+						old.map((row, index) =>
+							index === rowIndex ? data[rowIndex] : row,
+						),
+					);
+				}
+			},
+			updateData: (rowIndex: number, columnId: string, value: string) => {
+				setData(old =>
+					old.map((row, index) => {
+						if (index === rowIndex) {
+							return {
+								...old[rowIndex],
+								[columnId]: value,
+							};
+						}
+						return row;
+					}),
+				);
+			},
+		},
 	});
 
 	return (
