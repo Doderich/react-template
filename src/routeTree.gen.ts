@@ -21,6 +21,7 @@ import { Route as LayoutIndexImport } from './routes/_layout/index'
 const LayoutSemesterIndexLazyImport = createFileRoute('/_layout/semester/')()
 const LayoutProgramIndexLazyImport = createFileRoute('/_layout/program/')()
 const LayoutPersonalIndexLazyImport = createFileRoute('/_layout/personal/')()
+const LayoutFunctionIndexLazyImport = createFileRoute('/_layout/function/')()
 const LayoutFacultyIndexLazyImport = createFileRoute('/_layout/faculty/')()
 const LayoutDutyPlanerIndexLazyImport = createFileRoute(
   '/_layout/dutyPlaner/',
@@ -58,6 +59,13 @@ const LayoutPersonalIndexLazyRoute = LayoutPersonalIndexLazyImport.update({
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
   import('./routes/_layout/personal/index.lazy').then((d) => d.Route),
+)
+
+const LayoutFunctionIndexLazyRoute = LayoutFunctionIndexLazyImport.update({
+  path: '/function/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/function/index.lazy').then((d) => d.Route),
 )
 
 const LayoutFacultyIndexLazyRoute = LayoutFacultyIndexLazyImport.update({
@@ -120,6 +128,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFacultyIndexLazyImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/function/': {
+      id: '/_layout/function/'
+      path: '/function'
+      fullPath: '/function'
+      preLoaderRoute: typeof LayoutFunctionIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/personal/': {
       id: '/_layout/personal/'
       path: '/personal'
@@ -152,6 +167,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutAboutIndexLazyRoute,
     LayoutDutyPlanerIndexLazyRoute,
     LayoutFacultyIndexLazyRoute,
+    LayoutFunctionIndexLazyRoute,
     LayoutPersonalIndexLazyRoute,
     LayoutProgramIndexLazyRoute,
     LayoutSemesterIndexLazyRoute,
@@ -176,6 +192,7 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/about/",
         "/_layout/dutyPlaner/",
         "/_layout/faculty/",
+        "/_layout/function/",
         "/_layout/personal/",
         "/_layout/program/",
         "/_layout/semester/"
@@ -195,6 +212,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/faculty/": {
       "filePath": "_layout/faculty/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/function/": {
+      "filePath": "_layout/function/index.lazy.tsx",
       "parent": "/_layout"
     },
     "/_layout/personal/": {

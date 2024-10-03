@@ -59,7 +59,11 @@ export const CreateProgramForm: FC = () => {
 					<FormItem>
 						<FormLabel>Stupo</FormLabel>
 						<FormControl>
-							<Input placeholder="Stupo" {...field} />
+							<Input
+								type="number"
+								placeholder="Stupo"
+								{...field}
+							/>
 						</FormControl>
 						<FormMessage />
 					</FormItem>
@@ -72,7 +76,11 @@ export const CreateProgramForm: FC = () => {
 					<FormItem>
 						<FormLabel>Semester</FormLabel>
 						<FormControl>
-							<Input placeholder="Semester" {...field} />
+							<Input
+								type="number"
+								placeholder="Semester"
+								{...field}
+							/>
 						</FormControl>
 						<FormMessage />
 					</FormItem>
