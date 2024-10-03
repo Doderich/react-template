@@ -43,11 +43,6 @@ export function getMenuList(pathname: string): Group[] {
 					icon: Users,
 					submenus: [],
 				},
-			],
-		},
-		{
-			groupLabel: '',
-			menus: [
 				{
 					href: '/semester',
 					label: 'Semester',
@@ -60,6 +55,13 @@ export function getMenuList(pathname: string): Group[] {
 					label: 'Facultät',
 					active: pathname.includes('/faculty'),
 					icon: House as any,
+					submenus: [],
+				},
+				{
+					href: '/program',
+					label: 'Studiengang',
+					active: pathname.includes('/program'),
+					icon: Book as any,
 					submenus: [],
 				},
 			],

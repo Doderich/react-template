@@ -19,6 +19,7 @@ import { Route as LayoutIndexImport } from './routes/_layout/index'
 // Create Virtual Routes
 
 const LayoutSemesterIndexLazyImport = createFileRoute('/_layout/semester/')()
+const LayoutProgramIndexLazyImport = createFileRoute('/_layout/program/')()
 const LayoutPersonalIndexLazyImport = createFileRoute('/_layout/personal/')()
 const LayoutFacultyIndexLazyImport = createFileRoute('/_layout/faculty/')()
 const LayoutDutyPlanerIndexLazyImport = createFileRoute(
@@ -43,6 +44,13 @@ const LayoutSemesterIndexLazyRoute = LayoutSemesterIndexLazyImport.update({
   getParentRoute: () => LayoutRoute,
 } as any).lazy(() =>
   import('./routes/_layout/semester/index.lazy').then((d) => d.Route),
+)
+
+const LayoutProgramIndexLazyRoute = LayoutProgramIndexLazyImport.update({
+  path: '/program/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/program/index.lazy').then((d) => d.Route),
 )
 
 const LayoutPersonalIndexLazyRoute = LayoutPersonalIndexLazyImport.update({
@@ -119,6 +127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutPersonalIndexLazyImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/program/': {
+      id: '/_layout/program/'
+      path: '/program'
+      fullPath: '/program'
+      preLoaderRoute: typeof LayoutProgramIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/semester/': {
       id: '/_layout/semester/'
       path: '/semester'
@@ -138,6 +153,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutDutyPlanerIndexLazyRoute,
     LayoutFacultyIndexLazyRoute,
     LayoutPersonalIndexLazyRoute,
+    LayoutProgramIndexLazyRoute,
     LayoutSemesterIndexLazyRoute,
   }),
 })
@@ -161,6 +177,7 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/dutyPlaner/",
         "/_layout/faculty/",
         "/_layout/personal/",
+        "/_layout/program/",
         "/_layout/semester/"
       ]
     },
@@ -182,6 +199,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/personal/": {
       "filePath": "_layout/personal/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/program/": {
+      "filePath": "_layout/program/index.lazy.tsx",
       "parent": "/_layout"
     },
     "/_layout/semester/": {
