@@ -47,7 +47,7 @@ export const CreateDialog: FC<{
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(submit, onErrors)}>
-						<div className="flex flex-col gap-2">{children}</div>
+						{children}
 						<DialogFooter className="mt-2">
 							<DialogClose asChild>
 								<Button type="button" variant={'secondary'}>

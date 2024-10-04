@@ -42,6 +42,15 @@ export const CreateProfessorSchema = z.object({
 });
 export type CreateProfessor = z.infer<typeof CreateProfessorSchema>;
 
+export const UpdateProfessorSchema = z.object({
+	professorId: z.number(),
+	person: PersonSchema,
+	semester: SemesterSchema,
+	workload: z.number(),
+});
+
+export type UpdateProfessor = z.infer<typeof UpdateProfessorSchema>;
+
 export const DozentSchema = z.object({
 	lecturerId: z.number(),
 	person: PersonSchema,
@@ -61,9 +70,18 @@ export const CreateDozentFormSchema = z.object({
 });
 
 export type CreateDozentForm = z.infer<typeof CreateDozentFormSchema>;
+
 export const CreateDozentSchema = z.object({
 	personId: z.number(),
 	type: z.string(),
 });
 
 export type CreateDozent = z.infer<typeof CreateDozentSchema>;
+
+export const UpdateDozentSchema = z.object({
+	lecturerId: z.number(),
+	person: PersonSchema,
+	type: z.string(),
+});
+
+export type UpdateDozent = z.infer<typeof UpdateDozentSchema>;

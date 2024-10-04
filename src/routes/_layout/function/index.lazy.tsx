@@ -1,5 +1,4 @@
 import { CreateDialog } from '@/components/dialogs/create-dialog';
-import { CreateFacultyDialog } from '@/components/dialogs/create-faculty-dialog';
 import { CreateFunctionForm } from '@/components/forms/create-function-form';
 import { Header } from '@/components/header';
 import { FacultyTable } from '@/components/tables/faculty-table';
@@ -35,7 +34,9 @@ function Faculty() {
 						title="Erstelle Funktion"
 						btnText="Erstelle Funktion"
 					>
-						<CreateFunctionForm />
+						<div className="flex flex-col gap-2">
+							<CreateFunctionForm />
+						</div>
 					</CreateDialog>
 					<DataTable<Function, any>
 						columns={columns}

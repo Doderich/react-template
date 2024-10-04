@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
 	Dialog,
 	DialogClose,
@@ -9,55 +9,49 @@ import {
 	DialogTrigger,
 } from '../ui/dialog';
 import { Button } from '../ui/button';
+import { CreateFacultyForm } from '../forms/create-faculty-form';
+import { Spinner } from '../ui/spinner';
 import { Form } from '../ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Spinner } from '../ui/spinner';
-import { useFunction } from '@/hooks/queries/useFunction';
-import {
-	Function,
-	UpdateFunction,
-	UpdateFunctionSchema,
-} from '@/types/function';
 import { Pencil1Icon } from '@radix-ui/react-icons';
-import { CreateFunctionForm } from '../forms/create-function-form';
 
-export const UpdateFunctionDialog: FC<Function> = program => {
+export const UpdateDialog: FC<{
+	onSubmit: (data: any) => void;
+	schema: Zod.Schema<any>;
+	title: string;
+	children: React.ReactNode;
+	initialValues: any;
+}> = ({ onSubmit, schema, title, initialValues, children }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { updateFunctionAsync } = useFunction();
-
-	const form = useForm<UpdateFunction>({
-		resolver: zodResolver(UpdateFunctionSchema),
-		defaultValues: {
-			...program,
-		},
+	const form = useForm({
+		defaultValues: initialValues,
+		resolver: zodResolver(schema),
 	});
 
-	const onSubmit = async (data: UpdateFunction) => {
-		await updateFunctionAsync(data);
+	const submit = async (data: any) => {
+		await onSubmit(data);
 		setIsOpen(false);
 	};
 
 	const onErrors = (errors: any) => {
 		console.log(errors);
+		console.log(form.getValues());
 	};
-
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>
-				<Button size="icon">
+				<Button size={'icon'}>
 					<Pencil1Icon />
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Function bearbeiten</DialogTitle>
+					<DialogTitle>{title}</DialogTitle>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit, onErrors)}>
-						<div className="flex flex-col gap-2">
-							<CreateFunctionForm />
-						</div>
+					<form onSubmit={form.handleSubmit(submit, onErrors)}>
+						{children}
 						<DialogFooter className="mt-2">
 							<DialogClose asChild>
 								<Button type="button" variant={'secondary'}>
@@ -69,7 +63,7 @@ export const UpdateFunctionDialog: FC<Function> = program => {
 									<Spinner />
 								</Button>
 							) : (
-								<Button type="submit">Bestätigen</Button>
+								<Button type="submit">Aktualisieren</Button>
 							)}
 						</DialogFooter>
 					</form>

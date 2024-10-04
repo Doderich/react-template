@@ -1,5 +1,10 @@
 import { apiClient } from '@/lib/api';
-import { CreateProfessor, CreateDozent, Professor } from '@/types/personal';
+import {
+	CreateProfessor,
+	CreateDozent,
+	Professor,
+	UpdateProfessor,
+} from '@/types/personal';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const getProfessors = async (): Promise<Professor[]> => {
@@ -29,34 +34,49 @@ export const useProfessor = () => {
 		},
 	});
 
-	const { mutate: updateProfessor } = useMutation<
-		Professor,
-		Error,
-		Professor
-	>({
-		mutationFn: async (professor: Professor) => {
-			return (
-				await apiClient.put(
-					`/professor/${professor.professorId}`,
-					professor,
-				)
-			).data;
+	const {
+		mutate: updateProfessor,
+		data: updatedProfessor,
+		mutateAsync: updateProfessorAsync,
+	} = useMutation<Professor, Error, UpdateProfessor>({
+		mutationFn: async updateProfessor => {
+			return await apiClient.put(
+				`/professor/${updateProfessor.professorId}`,
+				updateProfessor,
+			);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['professors'] });
+		},
+		onError: error => {
+			console.error(error);
 		},
 	});
 
-	const { mutate: deleteProfessor } = useMutation<Professor, Error, number>({
-		mutationFn: async (professorId: number) => {
-			return (await apiClient.delete(`/professor/${professorId}`)).data;
-		},
-	});
+	const { mutate: deleteProfessor, mutateAsync: deleteProfessorAsync } =
+		useMutation<Professor, Error, number>({
+			mutationFn: async (professorId: number) => {
+				return (await apiClient.delete(`/professor/${professorId}`))
+					.data;
+			},
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: ['professors'] });
+			},
+			onError: error => {
+				console.error(error);
+			},
+		});
 
 	return {
 		professors,
+		updatedProfessor,
 		createProfessor,
 		createProfessorAsync,
 		createdProfessor,
 		updateProfessor,
+		updateProfessorAsync,
 		deleteProfessor,
+		deleteProfessorAsync,
 		isLoading,
 	};
 };

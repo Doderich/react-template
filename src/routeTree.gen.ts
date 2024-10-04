@@ -18,6 +18,7 @@ import { Route as LayoutIndexImport } from './routes/_layout/index'
 
 // Create Virtual Routes
 
+const LayoutSubjectIndexLazyImport = createFileRoute('/_layout/subject/')()
 const LayoutSemesterIndexLazyImport = createFileRoute('/_layout/semester/')()
 const LayoutProgramIndexLazyImport = createFileRoute('/_layout/program/')()
 const LayoutPersonalIndexLazyImport = createFileRoute('/_layout/personal/')()
@@ -39,6 +40,13 @@ const LayoutIndexRoute = LayoutIndexImport.update({
   path: '/',
   getParentRoute: () => LayoutRoute,
 } as any)
+
+const LayoutSubjectIndexLazyRoute = LayoutSubjectIndexLazyImport.update({
+  path: '/subject/',
+  getParentRoute: () => LayoutRoute,
+} as any).lazy(() =>
+  import('./routes/_layout/subject/index.lazy').then((d) => d.Route),
+)
 
 const LayoutSemesterIndexLazyRoute = LayoutSemesterIndexLazyImport.update({
   path: '/semester/',
@@ -156,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutSemesterIndexLazyImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/subject/': {
+      id: '/_layout/subject/'
+      path: '/subject'
+      fullPath: '/subject'
+      preLoaderRoute: typeof LayoutSubjectIndexLazyImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -171,6 +186,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutPersonalIndexLazyRoute,
     LayoutProgramIndexLazyRoute,
     LayoutSemesterIndexLazyRoute,
+    LayoutSubjectIndexLazyRoute,
   }),
 })
 
@@ -195,7 +211,8 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/function/",
         "/_layout/personal/",
         "/_layout/program/",
-        "/_layout/semester/"
+        "/_layout/semester/",
+        "/_layout/subject/"
       ]
     },
     "/_layout/": {
@@ -228,6 +245,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/semester/": {
       "filePath": "_layout/semester/index.lazy.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/subject/": {
+      "filePath": "_layout/subject/index.lazy.tsx",
       "parent": "/_layout"
     }
   }

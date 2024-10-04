@@ -14,7 +14,9 @@ import { TrashIcon } from 'lucide-react';
 
 export const DeleteDialog: FC<{
 	onDelete: () => Promise<any>;
-}> = ({ onDelete }) => {
+	title: string;
+	description: string;
+}> = ({ onDelete, title, description }) => {
 	const [open, setOpen] = useState(false);
 	return (
 		<AlertDialog open={open} onOpenChange={setOpen}>
@@ -25,14 +27,9 @@ export const DeleteDialog: FC<{
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>
-						Are you sure you want to delete this semester?
-					</AlertDialogTitle>
+					<AlertDialogTitle>{title}</AlertDialogTitle>
 				</AlertDialogHeader>
-				<AlertDialogDescription>
-					This action is irreversible. You will lose all data
-					associated with this semester.
-				</AlertDialogDescription>
+				<AlertDialogDescription>{description}</AlertDialogDescription>
 				<AlertDialogFooter>
 					<AlertDialogCancel asChild>
 						<Button variant={'secondary'}>Cancel</Button>

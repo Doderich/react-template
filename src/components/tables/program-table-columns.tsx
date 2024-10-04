@@ -24,11 +24,11 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '../ui/alert-dialog';
-import { Program } from '@/types/program';
+import { Program, UpdateProgramSchema } from '@/types/program';
 import { useProgram } from '@/hooks/queries/useProgram';
-import { UpdateFacultyDialog } from '../dialogs/update-faculty-dialog';
 import { DeleteDialog } from '../dialogs/delete-dialog';
-import { UpdateProgramDialog } from '../dialogs/update-program-dialog';
+import { UpdateDialog } from '../dialogs/update-dialog';
+import { CreateProgramForm } from '../forms/create-program-form';
 
 export const columns: ColumnDef<Program>[] = [
 	{
@@ -55,11 +55,22 @@ export const columns: ColumnDef<Program>[] = [
 		accessorKey: 'actions',
 		header: 'Actions',
 		cell: ({ row }) => {
-			const { deleteProgramAsync } = useProgram();
+			const { deleteProgramAsync, updateProgramAsync } = useProgram();
 			return (
 				<div className="flex gap-2">
-					<UpdateProgramDialog {...row.original} />
+					<UpdateDialog
+						title="Studiengang aktualisieren"
+						onSubmit={async function (data: any): Promise<void> {
+							await updateProgramAsync(data);
+						}}
+						schema={UpdateProgramSchema}
+						initialValues={row.original}
+					>
+						<CreateProgramForm />
+					</UpdateDialog>
 					<DeleteDialog
+						title="Studiengang löschen"
+						description="Möchten Sie diesen Studiengang wirklich löschen?"
 						onDelete={async () =>
 							await deleteProgramAsync(
 								row.original.studyProgramId.toString(),

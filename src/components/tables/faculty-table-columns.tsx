@@ -1,22 +1,12 @@
 'use client';
 
-import { ColumnDef, Row } from '@tanstack/react-table';
-import { Button } from '../ui/button';
-import { Cross1Icon, Pencil1Icon, TrashIcon } from '@radix-ui/react-icons';
-import { useEffect, useState } from 'react';
-import { Input } from '../ui/input';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '../ui/select';
+import { ColumnDef } from '@tanstack/react-table';
 
-import { Faculty } from '@/types/faculty';
-import { UpdateFacultyDialog } from '../dialogs/update-faculty-dialog';
+import { Faculty, UpdateFaculty, UpdateFacultySchema } from '@/types/faculty';
 import { useFaculty } from '@/hooks/queries/useFaculty';
 import { DeleteDialog } from '../dialogs/delete-dialog';
+import { UpdateDialog } from '../dialogs/update-dialog';
+import { CreateFacultyForm } from '../forms/create-faculty-form';
 
 export const columns: ColumnDef<Faculty>[] = [
 	{
@@ -31,15 +21,30 @@ export const columns: ColumnDef<Faculty>[] = [
 		accessorKey: 'actions',
 		header: 'Actions',
 		cell: ({ row }) => {
-			const { deleteFacultyAsync } = useFaculty();
+			const { deleteFacultyAsync, updateFacultyAsync } = useFaculty();
 			return (
 				<div className="flex gap-2">
-					<UpdateFacultyDialog {...row.original} />
+					<UpdateDialog
+						onSubmit={async function (
+							data: UpdateFaculty,
+						): Promise<void> {
+							await updateFacultyAsync(data);
+						}}
+						schema={UpdateFacultySchema}
+						title={'Update Faculty'}
+						initialValues={row.original}
+					>
+						<CreateFacultyForm />
+					</UpdateDialog>
 					<DeleteDialog
 						onDelete={async () =>
 							await deleteFacultyAsync(
 								row.original.facultyId.toString(),
 							)
+						}
+						title={'Delete Faculty'}
+						description={
+							'Are you sure you want to delete this faculty?'
 						}
 					/>
 				</div>

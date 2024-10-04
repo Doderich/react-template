@@ -10,6 +10,7 @@ import {
 	Book,
 	House,
 	FunctionSquareIcon,
+	SchoolIcon,
 } from 'lucide-react';
 import React from 'react';
 
@@ -70,6 +71,13 @@ export function getMenuList(pathname: string): Group[] {
 					label: 'Function',
 					active: pathname.includes('/function'),
 					icon: FunctionSquareIcon as any,
+					submenus: [],
+				},
+				{
+					href: '/subject',
+					label: 'Fach',
+					active: pathname.includes('/subject'),
+					icon: SchoolIcon as any,
 					submenus: [],
 				},
 			],

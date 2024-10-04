@@ -1,24 +1,41 @@
-import { CreateFacultyDialog } from '@/components/dialogs/create-faculty-dialog';
+import { CreateDialog } from '@/components/dialogs/create-dialog';
+import { CreateFacultyForm } from '@/components/forms/create-faculty-form';
 import { Header } from '@/components/header';
-import { FacultyTable } from '@/components/tables/faculty-table';
+import { columns } from '@/components/tables/faculty-table-columns';
+import { DataTable } from '@/components/ui/data-table';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { useFaculty } from '@/hooks/queries/useFaculty';
+import { CreateFacultySchema, Faculty } from '@/types/faculty';
 import { createLazyFileRoute } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/_layout/faculty/')({
-	component: Faculty,
+	component: FacultyPage,
 });
 
-function Faculty() {
-	const { faculties } = useFaculty();
+function FacultyPage() {
+	const { faculties, createFacultyAsync } = useFaculty();
 	return (
 		<>
 			<ScrollArea className="max-h-full">
 				<ScrollBar orientation="vertical" />
 				<Header title="Faculty" />
 				<div className="p-6 flex flex-col gap-2">
-					<CreateFacultyDialog />
-					<FacultyTable faculties={faculties ?? []} />
+					<CreateDialog
+						title="Erstelle Fakultät"
+						btnText="Erstelle Fakultät"
+						onSubmit={async data => {
+							await createFacultyAsync(data);
+						}}
+						schema={CreateFacultySchema}
+					>
+						<div className="flex flex-col gap-2">
+							<CreateFacultyForm />
+						</div>
+					</CreateDialog>
+					<DataTable<Faculty, any>
+						columns={columns}
+						data={faculties ?? []}
+					/>
 				</div>
 			</ScrollArea>
 		</>
